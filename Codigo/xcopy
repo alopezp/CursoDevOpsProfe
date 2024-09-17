@@ -1,0 +1,20 @@
+pipeline
+{
+    options
+    {
+        timeout(time:5, unit: "MINUTES")
+    }
+    agent any
+    stages
+    {
+        stage("Muevo fichero")
+        {
+            steps
+            {
+                bat """ xcopy  "C:\\Users\\Gusta\\OneDrive\\Documentos\\TESTING\\Alumnos.txt" "C:\\" /y
+                """
+                echo "Se movio el fichero."
+            }
+        }
+    }
+}
