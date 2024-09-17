@@ -1,0 +1,57 @@
+pipeline
+{
+    agent any
+    
+    environment
+    {
+        nombre_fichero = "Recetas.txt"
+    }
+    
+    options
+    {
+        timeout(time: 15, unit: "MINUTES")
+    }
+    
+    stages
+    {
+     stage("A")
+     {
+         steps
+         {
+             script
+             {
+                def variable = "Hola"     
+            }
+     }
+    }
+    
+    stage("B")
+    {
+        steps
+        {
+            script
+            {
+                def variable_2 = "Chau"
+            }
+        }
+    }
+    
+}
+post
+{
+    always
+    {
+        echo "El pipeline se ejecuto"
+    }
+    
+    success
+    {
+        echo "El pipeline se ejecuto de forma correcta."
+    }
+    failure
+    {
+        echo "El pipeline fallo"
+        mail to: "admin@indra.com", subject: "Pipeline NOMBRE fallo", body: "El pipeline NOMBRe no se ejecuto."
+    }
+}
+}
