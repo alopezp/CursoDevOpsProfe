@@ -1,0 +1,82 @@
+import java.text.SimpleDateFormat
+def a = 100
+def b = 100
+
+pipeline
+{
+    agent any
+    stages
+    {
+        stage("Suma")
+        {
+            steps
+            {
+                script
+                {
+                    suma = a+b
+                    string_suma = "La suma es: " + suma
+                }
+            }
+        }
+        
+        stage("Resta")
+        {
+            steps
+            {
+                script
+                {
+                    resta = a-b
+                    string_resta = "La resta es: " + resta
+                }
+            }
+        }
+        
+        stage("Multiplicacion")
+        {
+            steps
+            {
+                script
+                {
+                    mult = a*b
+                    string_mult = "La multiplicacion es: " + mult
+                    
+                }
+            }
+        }
+        
+        stage("Division")
+        {
+            steps
+            {
+                script
+                {
+            if (a==0 || b ==0) 
+            {
+                println "No se puede dividir por 0"
+            }
+            else
+            {
+                div = a/b
+                string_div = "La division es: " + div
+            }
+                }
+        }
+        }
+        
+        stage("Escribir fichero")
+        {
+            steps
+            {
+                script
+                {
+                    fecha = new Date()
+                    formato = new SimpleDateFormat("ddMMyyyy")
+                    fecha_hoy = formato.format(fecha)
+                    string_final = string_suma+ "\n" + string_resta+ "\n" + string_mult+ "\n" + string_div
+                    writeFile(file:"C:\\Calculadora_${fecha_hoy}.txt", text: string_final)
+                }
+            }
+        }
+    }
+
+}
