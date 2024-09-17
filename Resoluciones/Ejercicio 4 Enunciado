@@ -24,3 +24,87 @@ Donde para cada una se debe hacer una acción informativa del estado de ejecuci�
 ENTREGABLE: 
 -	Código del proyecto
 ENVIAR A: gavargas@itformacion.com
+
+
+//RESOLUCION:
+import java.text.SimpleDateFormat
+pipeline
+{
+    agent any
+    options
+    {
+        timeout(time:5, unit: "MINUTES")
+    }
+    
+    environment
+    {
+        ruta_archivo = "C:\\"
+        nombre_archivo = "poblacion_neta_"
+    }
+    
+    stages
+    {
+        stage("Poblacion")
+        {
+            steps
+            {
+                script
+                {
+                    def poblacion_bruta = 1000000
+                    def poblacion_neta = poblacion_bruta * 0.8
+                    string_poblacion = "La poblacion es: " + poblacion_neta
+                }
+            }
+        }
+        
+        stage("Creacion de fichero")
+        {
+            steps
+            {
+                script
+                {
+                    def fecha = new Date()
+                    def fecha_formateada = new SimpleDateFormat("ddMMyyyy")
+                    def fecha_final = fecha_formateada.format(fecha)
+                    writeFile(file: "${ruta_archivo}${nombre_archivo}" + fecha_final+ ".txt", text:string_poblacion)
+                }
+            }
+        }
+        
+        stage("Correr si es miercoles")
+        {
+            steps
+            {
+                script
+                {
+                    def dia = new Date().getDay()
+                    if (dia == 3)
+                    {
+                        echo "El numero de build es: ${env.BUILD_NAME}" 
+                    }
+                    else
+                    {
+                        echo "No hace nada"
+                    }
+                }
+            }
+        }
+    }
+    
+    post
+    {
+        always
+        {
+            echo "Se ejecuto el proceso"
+        }
+        success
+        {
+            echo "El proceso corrio de forma correcta"
+        }
+        
+        failure
+        {
+            echo "El proceso fallo"
+        }
+    }
+}
