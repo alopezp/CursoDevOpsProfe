@@ -1,0 +1,26 @@
+Ejercicio 4:
+Desarrollar un pipeline que contenga la siguiente estructura:
+- Variables de entorno 
+- Options
+- Stages
+- Post
+
+En la sección de “Variables de entorno” declarar lo siguiente: 
+-	Ruta del fichero
+-	Nombre del fichero
+Para luego ser utilizado en el stage correspondiente.
+En la sección de “Options” declarar un timeout de 5 minutos. 
+En la sección de “Stages” lo siguiente: 
+-	Declarar un stage – puede llamarse como prefieran - que se encargue de calcular la población neta, el cual es un calculo de población_total * 0.8
+La misma debe estar basada en la población de su ciudad actual. 
+-	 Declarar un stage – puede llamarse como prefieran - que CREE un archivo llamado “población_final_fechaHoy” y que almacene la información USANDO las variables de entorno. 
+-	Declarar un stage – puede llamarse como prefieran – que informe el numero de BUILD ACTUAL. PERO, este stage se va a ejecutar SOLO si es miércoles
+En la sección de “Post” debe contener estas tres opciones:
+-	Success 
+-	Always
+-	Failure
+Donde para cada una se debe hacer una acción informativa del estado de ejecución. 
+
+ENTREGABLE: 
+-	Código del proyecto
+ENVIAR A: gavargas@itformacion.com
