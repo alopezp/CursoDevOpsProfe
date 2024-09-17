@@ -1,0 +1,54 @@
+pipeline
+{
+    agent any
+    stages
+    {
+        stage("Obtener el numero del Build actual")
+        {
+            steps
+            {
+                echo "El numero de compilaciones actuales es: ${env.BUILD_NUMBER}"
+            }
+        }
+        
+        stage("Obtener el nombre del Job")
+        {
+            steps
+            {
+                echo "El nombre del trabajo de Jenkins es: ${env.JOB_NAME}"
+            }
+        }
+        
+        stage("URL DEL BUILD")
+        {
+            steps
+            {
+                echo "La url de esta compilacion es: ${env.BUILD_URL}"
+            }
+        }
+        
+        stage("Nombre del nodo que ejecuta")
+        {
+            steps
+            {
+                echo "El nombre del nodo es: ${env.NODE_NAME}"
+            }
+        }
+        
+        stage("Executor number")
+        {
+            steps
+            {
+                echo "El numero del ejecutor es: ${env.EXECUTOR_NUMBER}"
+            }
+        }
+        
+        stage("Nombre del usuario que ejecuto la tarea")
+        {
+            steps
+            {
+                echo "El nombre del usuario es: ${env.USER}"
+            }
+        }
+    }
+}
