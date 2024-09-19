@@ -1,0 +1,46 @@
+EJERCICIO MODELO DE EXAMEN N° 1:
+Desarrolle un pipeline que informe lo siguiente en base a los días de la semana
+Si el día es lunes informe los siguientes calculos matemáticos de 2 numeros: Suma, Resta, Multiplicación, Division
+Si el día es Martes informe el usuario que realizo la ejecución con la fecha actual 
+Si el día es Miércoles generar un mensaje por consola que informe que se ejecuto el pipeline
+Si el día es jueves informar el clima actual en su ciudad (prestablecido en el código)
+Si el día es Viernes generar siguiente mensaje de consola "Lo estas haciendo de maravilas!"
+
+ENTREGABLE:
+- Codigo
+
+EJERCICIO MODELO DE EXAMEN N° 2:
+Desarrollar un pipeline que realice calculos matematicos a partir de datos almacenados en un archivo, informe los resultados por consola
+y guarde los resultados en otro archivo. 
+Los calculos que se deben hacer son los aritmeticos tradicionales:
+- Suma
+- Resta
+- Multiplicacion
+- Division 
+ -> En el caso de la division validar que ninguno de los dos numeros sea 0 (cero)
+
+EJERCICIO MODELO DE EXAMEN N° 3:
+Generar un pipeline que informe 10 numeros consecutivos, y por cada numero consecutivo informar el cuadradado de dicho numero en un 
+txt de salida con el formato "salida_FechaDeHoy"
+N= N*N
+2 = 4 
+3 = 9
+4 = 16
+5 = 25
+6 = 36
+7 = 49
+8 = 64
+ENTREGABLE: Codigo del proyecto
+
+
+EJERCICIO MODELO DE EXAMEN N°4:
+Desarrollar un Pipeline Declarativo en Jenkins que informe a traves de distintos Stages
+lo siguiente:
+- El pipeline debe tener un mensaje de bienvenida mostrando la fecha actual en formato YYYY-MM-dd
+- Información relevante sobre tu ciudad actual:
+  ~ Clima actual
+  ~ Población actual
+- En base a la población actual se debe calcular la población neta e informarla:
+  población neta = poblacion actual * 0.8
+Se debe declarar las variables de manera global. 
+Una vez generado todo esto, se debe generar un fichero de salida con la información.
