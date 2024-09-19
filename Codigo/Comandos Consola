@@ -1,0 +1,56 @@
+//Traer todas las tareas
+//Jenkins.instance.getAllItems().each { job -> println(job.fullName)}
+
+//Ejecutar un comando desde la consonla. 
+/*
+def command = "cmd /c ipconfig /flushdns"
+def procedimiento = command.execute()
+procedimiento.waitFor() //Con esto nos aseguramos que el script NO continue hasta que el comando haya finalizado su ejecucion
+println("Salida del comando: ${procedimiento.text}")
+*/
+
+/*
+//Descripcion de la tarea y el nombre
+def nombreTarea = "Indra_1"
+def job = Jenkins.instance.getItem(nombreTarea)
+println ("Nombre del trabajo: ${job.fullName}")
+println ("Descripcion: ${job.description}")
+*/
+
+/*
+def nombreTarea = "Indra_1"
+def job = Jenkins.instance.getItem(nombreTarea)
+job.delete()
+println ("Se ha eliminado el job: ${nombreTarea}")
+*/
+
+/*
+def nombreTarea ="Indra_12"
+def job = Jenkins.instance.getItemByFullName(nombreTarea)
+def builds = job.builds
+builds.each { build -> println("Numero de construcción: ${build.number}, Estado: ${build.result}")}
+*/
+/*
+import jenkins.model.*
+import hudson.security.*
+
+def allUsers = User.getAll()
+println("Todos los usuarios:")
+allUsers.each { user -> println ("- ${user.id}")
+}
+*/
+
+/*
+def usuarios_id = ["UsuarioFinal"]
+usuarios_id.each { usuario_id -> def usuario = User.get(usuario_id)
+  if(usuario != null)
+  {
+    usuario.delete()
+    println("Usuario ${usuario_id} borrado exitosamente.")
+  }
+  else
+  {
+    println ("No se encontro el usuario con el id ${usuario_id}")
+  }
+}
+*/
