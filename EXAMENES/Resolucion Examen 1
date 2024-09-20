@@ -1,0 +1,103 @@
+/*
+EJERCICIO MODELO DE EXAMEN N° 1:
+Desarrolle un pipeline que informe lo siguiente en base a los días de la semana
+Si el día es lunes informe los siguientes calculos matemáticos de 2 numeros: Suma, Resta, Multiplicación, Division
+Si el día es Martes informe el usuario que realizo la ejecución con la fecha actual 
+Si el día es Miércoles generar un mensaje por consola que informe que se ejecuto el pipeline
+Si el día es jueves informar el clima actual en su ciudad (prestablecido en el código)
+Si el día es Viernes generar siguiente mensaje de consola "Lo estas haciendo de maravilas!"
+*/
+def fecha_actual = new Date()
+def dia = new Date().getDay()
+def dia_semana = [1: "Lunes", 2:"Martes", 3:"Miercoles", 4:"Jueves", 5:"Viernes"]
+pipeline
+{
+    agent any
+    options
+    {
+        timeout(time:5, unit:"MINUTES")
+    }
+    
+    stages
+    {
+        
+        stage("Calculos matematicos")
+        {
+            when
+            {
+                equals(actual: dia, expected:1)
+            }
+            steps
+            {
+                script
+                {
+                    numero1=100
+                    numero2=200
+                    suma = numero1+numero2
+                    resta = numero1-numero2
+                    mult = numero1*numero2
+                    division = numero1/numero2
+                    println "La suma es: " + suma
+                    println "La resta es: " + resta
+                    println "La multiplicacion es: " + mult
+                    println "La division es: " + division
+                }
+            }
+        }
+        
+        stage("Informar usuario")
+        {
+            when
+            {
+                equals(actual:dia, expected:2)
+            }
+            steps
+            {
+                script
+                {
+                    def user = currentBuild.getBuildCauses('hudson.model.Cause$UserIdCause')[0]?.userId
+                    echo 'El pipeline fue ejecutado por: ${user} y la fecha actual es ${fecha_actual}'
+                }
+            }
+            
+        }
+        
+        stage("Estado de ejecucion")
+        {
+            when
+            {
+                equals(actual:dia, expected:3)
+            }
+            
+            steps
+            {
+                echo 'El pipeline se ejecuto correctamente.'
+            }
+        }
+        
+        stage("Clima actual")
+        {
+            when
+            {
+                equals(actual:dia, expected:4)
+            }
+            
+            steps
+            {
+                echo "El clima actual en Barcelona es: llueve"
+            }
+        }
+        
+        stage("Mensaje de viernes")
+        {
+            when
+            {
+                equals(actual:dia, expected:5)
+            }
+            steps
+            {
+                echo "Lo estas haciendo de maravillas!"
+            }
+        }
+}
+}
