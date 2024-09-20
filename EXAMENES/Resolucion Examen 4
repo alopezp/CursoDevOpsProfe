@@ -1,0 +1,48 @@
+/*
+EJERCICIO MODELO DE EXAMEN N°4:
+Desarrollar un Pipeline Declarativo en Jenkins que informe a traves de distintos Stages
+lo siguiente:
+- El pipeline debe tener un mensaje de bienvenida mostrando la fecha actual en formato YYYY-MM-dd
+- Información relevante sobre tu ciudad actual:
+  ~ Clima actual
+  ~ Población actual
+- En base a la población actual se debe calcular la población neta e informarla:
+  población neta = poblacion actual * 0.8
+Se debe declarar las variables de manera global. 
+Una vez generado todo esto, se debe generar un fichero de salida con la información.
+*/
+
+dia = new Date().format('yyyyMMdd')
+poblacion_actual = 1600000
+poblacion_neta = poblacion_actual * 0.8
+string = "La poblacion neta es ${poblacion_neta}"
+
+pipeline
+{
+    agent any
+    stages
+    {
+        stage("Mensaje de bienvenida")
+        {
+            steps
+            {
+                script
+                {
+                    println "Bienvenido a mi tarea, el dia de hoy es ${dia}"
+                }
+            }
+        }
+        
+        stage("Informacion de mi ciudad actual")
+        {
+            steps
+            {
+                script
+                {
+                    echo "El clima actual es parcialmente nublado y con lluvia, la poblacion actual es de ${string} "
+                    writeFile(file: "salida_txt.txt", text: string)
+                }
+            }
+        }
+    }
+}
