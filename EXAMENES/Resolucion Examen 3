@@ -1,0 +1,45 @@
+/*
+Generar un pipeline que informe 10 numeros consecutivos, y por cada numero consecutivo informar el cuadradado de dicho numero en un 
+txt de salida con el formato "salida_FechaDeHoy"
+N= N*N
+2 = 4 
+3 = 9
+4 = 16
+5 = 25
+6 = 36
+7 = 49
+8 = 64
+ENTREGABLE: Codigo del proyecto
+*/
+pipeline
+{
+    agent any
+    stages
+    {
+        stage("Numeros consecutivos")
+        {
+            steps
+            {
+                script
+                {
+                    numeros = []
+                    
+                for (i= 1; i<=10; i++)
+                {
+                    numeros.add(i)
+                }
+                
+                fechaHoy = new Date().format('yyyyMMdd')
+                archivoSalida = "salida_${fechaHoy}.txt"
+                writeFile(file: archivoSalida, text: "")
+                resultados = numeros.collect { numero -> 
+                cuadrado = numero * numero 
+                "Numero: ${numero}, cuadrado: ${cuadrado}"
+                }
+                writeFile(file: archivoSalida, text: resultados.join("\n"))
+                echo "Resultados guardados en ${archivoSalida}"
+                }
+            }
+        }
+    }
+}
