@@ -1,0 +1,45 @@
+/*
+EJERCICIO MODELO DE EXAMEN N° 2:
+Desarrollar un pipeline que realice calculos matematicos a partir de datos almacenados en un archivo, informe los resultados por consola
+y guarde los resultados en otro archivo. 
+Los calculos que se deben hacer son los aritmeticos tradicionales:
+- Suma
+- Resta
+- Multiplicacion
+- Division 
+ -> En el caso de la division validar que ninguno de los dos numeros sea 0 (cero)
+*/
+
+pipeline
+{
+    agent any
+    options
+    {
+        timeout(time: 5, unit:"MINUTES")
+    }
+    
+    stages
+    {
+        stage("Leo el archivo")
+        {
+            steps
+            {
+                script
+                {
+                    numeros = readFile(file:"C:\\Users\\Gusta\\OneDrive\\Documentos\\Numeros.txt").trim().split("\n").collect { it.toInteger()}
+                    numero1 = numeros[0]
+                    numero2 = numeros[1]
+                    suma = numero1 + numero2
+                    resta = numero1 - numero2
+                    mult = numero1* numero2
+                    division = numero1 / numero2
+                    
+                    println "El resultado de la suma es: " +suma
+                    println "El resultado de la resta es: " +resta
+                    println "El resultado de la mult es: " +mult
+                    println "El resultado de la division es: " +division
+                }
+            }
+        }
+    }
+}
