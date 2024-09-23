@@ -1,0 +1,117 @@
+pipeline
+{
+    agent any
+    
+    tools
+    {
+        maven 'Maven'
+        jfrog 'Jfrog'
+    }
+    
+    
+    environment
+    {
+        ARTIFACTORY_URL = 'https://localhost:9000'
+        ARTIFACTORY_REPO = 'my-local-repository'
+        ARTIFACTORY_CRED = 'Token_De_Integracion'
+    }
+    
+    stages
+    {
+        stage('Checkout')
+        {
+            git url: 'htttphttps://github.com/Ripper2021/Instaladores.git', branch: 'master'
+        }
+        
+        Stage("Test")
+        {
+            steps
+            {
+                bat 'mvn test'
+            }
+        }
+        
+        stage("Clean")
+        {
+            steps
+            {
+                bat 'mvn clean'
+            }
+        }
+        
+        stage("Install")
+        {
+            steps
+            {
+                bat 'mvn install'
+            }
+        }
+        
+        Stage("Configuramos el JFrog Cli") //Establezco Conexión
+        {
+            steps
+            {
+                script
+                {
+                    bat """
+                    jfrog rt config --url $ARTIFACTORY_URL --user $ARTIFACTORY_USER --password $ARTIFACTORY_PASSWORD --interactive=false
+                    """
+                }
+            }
+        }
+        stage("Publico al Artifactory")
+        {
+            steps
+            {
+                script
+                {
+                    bat """
+                    jfrog rt u "target/*-jar" "$ARTIFACTORY_REPO/tu-proyecto/${env.BUID_NUMBER}/"
+                    """
+                }
+            }
+        }
+    }
+}
+
+
+post
+{
+    always
+    {
+        junit "target/surefire-reports/*.xml" //Publica los resultados de las pruebas de tipo JUNIT realizadas. 
+    }
+}
+
+
+/*
+Comandos mas utilizados en JFROG CLI:
+jfrog rt config: Nos permite configurar el acceso al srvidor de Jfrog Artifactory, ingresnado la URL del servidor y las credenciales de acceso
+(usuario, contraseña o API token)
+
+jfrog rt upload "/ruta/a/tu/archivo" "repositorio-destino"
+Este comando sube un artefacto a Artifactory. 
+
+jfrog rt download "repositorio-destino/ruta/al/(archivo" "ruta/destino/local"
+Este comando descarga artefactos desde Artifactory.
+
+jfrog rt download "libs-release-local/build/libs/my-app.jar" "./"
+Descarga el archivo my-app-jar del repositorio a lac arpeta local actual
+
+
+Busquieda de artefactos (search)
+
+jfrog rt search "repositorio-destion/ruta/patron"
+Permite buscar artefactos en Artifactory que coincidan con un patrón
+
+jfrog rt delete "repositorio-destino/ruta/al/archivo"
+
+Borarr un archivo:
+jfrog rt delete "libs-release-local/build/libs/my-old-app.jar"
+
+
+
+
+*/
+
+
