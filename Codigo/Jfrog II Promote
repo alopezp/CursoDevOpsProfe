@@ -1,0 +1,126 @@
+pipeline
+{
+    agent any
+    
+    tools
+    {
+        maven 'Maven'
+        jfrog 'jfrog-cli'
+    }
+    
+    environment
+    {
+        ARTIFACTORY_URL= 'https://your-artifactory-instance.com/artifactory'
+        ARTIFACTORY_REPO = 'libs-release-local'
+        ARTIFACTORY_VIRTUAL_REPO = 'libs-snapshot' //Resolucion de dependencias
+        ARTIFACTORY_CRED ='credenciales'
+        ARTIFACTORY_BUILD_NAME = 'tu-build-proyecto'
+        ARTIFACTORY_USER = 'Usuario'
+    }
+    
+    stages
+    {
+        stage("Checkout")
+        {
+            steps
+            {
+                git url: 'github.com.git', branch: "master"
+            }
+        }
+        
+        
+        stage("Configurar el cliente de JFROG CLI")
+        {
+            steps
+            {
+                script
+                {
+                    bat """
+                    jfrog rt config --url $ARTIFACTORY_URL -- $ARTIFACTORY_USER --pasword $ARTIFACTORY_CREDENCIAL --interactive=false
+                    """
+                }
+            }
+        }
+        
+        stage("Resolver dependencias")
+        {
+            steps
+            {
+                script
+                {
+                    bat """
+                    jfrog rt mvn 'clean install' --build-name $ARTIFACTORY_BUILD_NAME --build-number $BUILD_NUMBER \ --repo-resolve $ARTIFACTORY_VIRTUAL_REPO
+                    --repo-deploy $ARTIFACTORY_REPO
+                    ""
+                }
+            }
+        }
+        
+        stage("Tests")
+        {
+            steps
+            {
+                bat "mvn test
+            }
+        }
+        
+        stage("Publicar en Artifactory")
+        {
+        steps
+        {
+            script
+            {
+                bat """
+                
+                jfrog rt u /target/*.jar" $ARTIFACTORY_REPO/tu-proyecto/${env.BUILD_NUMBER}/"
+                jfrog rt build-publish $ARTIFACTORY_BUILD_NAME $BUILD_NUMBER
+                
+                """
+            }
+        }
+            
+        }
+        
+        
+        stage("Promover build")
+        {
+            when
+            {
+                branch 'master'
+            }
+        
+            steps
+            {
+                script
+                {
+                    bat """
+                    jfrog rt build-promote --status "released" --comment "Build successfully promoted"
+                    $ARTIFACTORY_BUILD_NAME $BUILD_NUMBER
+                    """
+                }
+            }
+        }
+        }
+    }
+}
+
+post
+{
+    success
+    {
+        echo "Todo salio bien"
+    }
+    
+    always
+    {
+        echo 'Se ejecuto el proceso.'
+    }
+}
+
+/*
+Que es promover? O PROMOTE. 
+Se refiere al proceso de mover artefactos entre diferentes repositorios o niveles de estado(por ejemplo, de "desarrollo" a "producción") Este proceso
+es esencial en el flujo de trabajo de DevOps, ya que permite GESTIONAR las versiones de los artefactos a lo largo de su ciclo de vida.
+Mover de un repositorio de snapshots a un repositorio de releases:
+jfrog rt promote "my-artifact:1.0.0" "libs-release-local" --target -repo "libs-release-local1" --copy
+*/
